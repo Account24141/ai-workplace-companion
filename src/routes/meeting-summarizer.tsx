@@ -36,6 +36,7 @@ function MeetingSummarizer() {
   const [notes, setNotes] = useState("");
   const [result, setResult] = useState<MeetingSummary | null>(null);
   const [loading, setLoading] = useState(false);
+  const summarize = useServerFn(summarizeMeetingAi);
 
   async function run() {
     if (notes.trim().length < 20) {
@@ -43,9 +44,13 @@ function MeetingSummarizer() {
       return;
     }
     setLoading(true);
-    void buildMeetingPrompt(notes);
-    setResult(await simulate(generateMeetingSummary(notes), 1500));
-    setLoading(false);
+    try {
+      setResult(await summarize({ data: { notes } }));
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Could not summarize the notes.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   function copy() {
