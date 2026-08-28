@@ -9,12 +9,9 @@ import { OutputBlock } from "@/components/OutputBlock";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  buildResearchPrompt,
-  generateResearch,
-  simulate,
-  type ResearchOutput,
-} from "@/lib/ai-demo";
+import { useServerFn } from "@tanstack/react-start";
+import type { ResearchOutput } from "@/lib/ai-demo";
+import { researchAi } from "@/lib/ai.functions";
 
 export const Route = createFileRoute("/research-assistant")({
   head: () => ({
