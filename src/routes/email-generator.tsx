@@ -16,7 +16,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { buildEmailPrompt, generateEmail, simulate, type Tone } from "@/lib/ai-demo";
+import { useServerFn } from "@tanstack/react-start";
+import type { Tone } from "@/lib/ai-demo";
+import { generateEmailAi } from "@/lib/ai.functions";
 
 export const Route = createFileRoute("/email-generator")({
   head: () => ({
