@@ -36,6 +36,7 @@ function ResearchAssistant() {
   const [topic, setTopic] = useState("");
   const [result, setResult] = useState<ResearchOutput | null>(null);
   const [loading, setLoading] = useState(false);
+  const research = useServerFn(researchAi);
 
   async function run() {
     if (!topic.trim()) {
@@ -43,9 +44,13 @@ function ResearchAssistant() {
       return;
     }
     setLoading(true);
-    void buildResearchPrompt(topic);
-    setResult(await simulate(generateResearch(topic), 1500));
-    setLoading(false);
+    try {
+      setResult(await research({ data: { topic } }));
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Could not generate insights.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   function copy() {
