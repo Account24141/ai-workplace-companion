@@ -91,7 +91,7 @@ export function AppLayout({
         </nav>
 
         <p className="rounded-xl bg-sidebar-accent/60 p-3 text-xs leading-relaxed text-sidebar-foreground/70">
-          Demo prototype — all AI responses are simulated locally in your browser.
+          Powered by Lovable AI — responses are generated live for each request.
         </p>
       </aside>
 

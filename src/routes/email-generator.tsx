@@ -16,7 +16,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { buildEmailPrompt, generateEmail, simulate, type Tone } from "@/lib/ai-demo";
+import { useServerFn } from "@tanstack/react-start";
+import type { Tone } from "@/lib/ai-demo";
+import { generateEmailAi } from "@/lib/ai.functions";
 
 export const Route = createFileRoute("/email-generator")({
   head: () => ({
@@ -43,6 +45,7 @@ function EmailGenerator() {
   const [tone, setTone] = useState<Tone>("formal");
   const [output, setOutput] = useState("");
   const [loading, setLoading] = useState(false);
+  const generate = useServerFn(generateEmailAi);
 
   async function run() {
     if (!purpose.trim()) {
@@ -50,11 +53,14 @@ function EmailGenerator() {
       return;
     }
     setLoading(true);
-    const prompt = buildEmailPrompt({ purpose, recipient, tone });
-    const draft = await simulate(generateEmail({ purpose, recipient, tone }), 1300);
-    void prompt;
-    setOutput(draft);
-    setLoading(false);
+    try {
+      const { text } = await generate({ data: { purpose, recipient, tone } });
+      setOutput(text);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Could not generate the email.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   function copy() {

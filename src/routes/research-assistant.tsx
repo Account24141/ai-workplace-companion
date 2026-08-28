@@ -9,12 +9,9 @@ import { OutputBlock } from "@/components/OutputBlock";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  buildResearchPrompt,
-  generateResearch,
-  simulate,
-  type ResearchOutput,
-} from "@/lib/ai-demo";
+import { useServerFn } from "@tanstack/react-start";
+import type { ResearchOutput } from "@/lib/ai-demo";
+import { researchAi } from "@/lib/ai.functions";
 
 export const Route = createFileRoute("/research-assistant")({
   head: () => ({
@@ -39,6 +36,7 @@ function ResearchAssistant() {
   const [topic, setTopic] = useState("");
   const [result, setResult] = useState<ResearchOutput | null>(null);
   const [loading, setLoading] = useState(false);
+  const research = useServerFn(researchAi);
 
   async function run() {
     if (!topic.trim()) {
@@ -46,9 +44,13 @@ function ResearchAssistant() {
       return;
     }
     setLoading(true);
-    void buildResearchPrompt(topic);
-    setResult(await simulate(generateResearch(topic), 1500));
-    setLoading(false);
+    try {
+      setResult(await research({ data: { topic } }));
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Could not generate insights.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   function copy() {
