@@ -9,12 +9,9 @@ import { OutputBlock } from "@/components/OutputBlock";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  buildMeetingPrompt,
-  generateMeetingSummary,
-  simulate,
-  type MeetingSummary,
-} from "@/lib/ai-demo";
+import { useServerFn } from "@tanstack/react-start";
+import type { MeetingSummary } from "@/lib/ai-demo";
+import { summarizeMeetingAi } from "@/lib/ai.functions";
 
 export const Route = createFileRoute("/meeting-summarizer")({
   head: () => ({
