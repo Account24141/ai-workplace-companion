@@ -78,7 +78,10 @@ function ResponsibleAi() {
       <section className="surface-card p-5 md:p-6">
         <h2 className="text-base font-semibold">How this prototype works</h2>
         <ul className="mt-3 space-y-2 text-sm leading-relaxed text-muted-foreground">
-          <li>• All generation is simulated in your browser — nothing you type leaves this page.</li>
+          <li>
+            • Your input is sent securely to the AI model only to generate a response — nothing is
+            stored, logged or used to train models.
+          </li>
           <li>• There is no account, database or stored history; refreshing clears your work.</li>
           <li>• Structured prompt templates are used internally to organise each request.</li>
           <li>• Every output area is editable so you can correct and finalise the draft yourself.</li>
